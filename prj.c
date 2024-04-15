@@ -1,3 +1,6 @@
+//Name : Vasanth Balaji Murugavel, NUID: 002743336
+//Name : Naga Tejaswani Potta, NUID: 002743901
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -97,7 +100,7 @@ void execute_command_with_pipes(char *command) {
             if (input_redirection && i == 0) {
                 int fd = open(input_file, O_RDONLY); // Open the input file for reading only
                 if (fd == -1) {
-                    perror(input_file); // Error handling for file open failure
+                    fprintf(stderr,"%s: File not found\n",input_file); // Error handling for file open failure
                     exit(EXIT_FAILURE);
                 }
                 dup2(fd, STDIN_FILENO); // Redirect standard input to the file
@@ -109,7 +112,7 @@ void execute_command_with_pipes(char *command) {
                 int fd = open(output_file, O_WRONLY | O_CREAT | O_TRUNC, 0644); // Open the output file for writing only, 
                 // create if not exists, truncate if exists
                 if (fd == -1) {
-                    perror(output_file); // Error handling for file open failure
+                    fprintf(stderr,"%s: Cannot create file\n",output_file); // Error handling for file open failure
                     exit(EXIT_FAILURE);
                 }
                 dup2(fd, STDOUT_FILENO); // Redirect standard output to the file
@@ -184,9 +187,13 @@ int main() {
         // Remove newline character if present
         input[strcspn(input, "\n")] = '\0';
 
+        if (strcmp(input, "\0") == 0) {
+            continue; // Skip processing empty input
+        }
+
         // Check for built-in commands
         if (strcmp(input, "exit") == 0) {
-            continue; // Continues on seeking new inputs
+            break; // Exit the shell
         } else if (strncmp(input, "cd ", 3) == 0) {
             // Change directory if input starts with 'cd '
             char *path = input + 3; // Skip 'cd ' prefix
