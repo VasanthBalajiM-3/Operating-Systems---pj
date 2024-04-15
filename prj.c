@@ -186,7 +186,7 @@ int main() {
 
         // Check for built-in commands
         if (strcmp(input, "exit") == 0) {
-            break; // Exit the shell
+            continue; // Exit the shell
         } else if (strncmp(input, "cd ", 3) == 0) {
             // Change directory if input starts with 'cd '
             char *path = input + 3; // Skip 'cd ' prefix
