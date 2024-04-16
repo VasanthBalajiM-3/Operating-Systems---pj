@@ -163,14 +163,6 @@ void execute_command_with_pipes(char *command) {
     }
 }
 
-// Function to change directory
-void change_directory(char *path) {
-    if (chdir(path) != 0) {
-        perror(path);
-    }
-}
-
-
 int main() {
     char input[MAX_INPUT_SIZE];
 
@@ -194,10 +186,29 @@ int main() {
         // Check for built-in commands
         if (strcmp(input, "exit") == 0) {
             break; // Exit the shell
-        } else if (strncmp(input, "cd ", 3) == 0) {
-            // Change directory if input starts with 'cd '
-            char *path = input + 3; // Skip 'cd ' prefix
-            change_directory(path);
+        }
+        else if (strncmp(input, "cd", 2) == 0) {
+            // Handle "cd" command
+            char *path = input + 2; // Skip 'cd' prefix
+
+            // Trim leading whitespace characters, this is needed to handle "cd " case
+            while (*path == ' ') {
+                path++; // Skip leading whitespace
+            }
+
+            if (*path == '\0') {
+                // No directory provided, change to home directory
+                if (chdir(getenv("HOME")) != 0) {
+                    perror("chdir");
+                }
+                // continue; // The above HOME directory change can be omitted to stay on the same directory for the cli as just cd
+            } else {
+                // Directory path provided, validate and change directory
+                if (chdir(path) != 0) {
+                    perror(path); // Display error if directory change fails
+                }
+            }
+
             continue; // Skip executing further code after 'cd'
         }
 
