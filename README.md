@@ -7,4 +7,5 @@ The synopsis of what you can learn from this repository:
   4. Reading of the user input using fgets, parsing them using strkok to split the respective strings using a delimeter "space, | " to execute respective source codes.
 Additional feature:
   5. Enabling the Change directory command "cd" using a function that helps in the navigation.
+
 This repository should provide a well cemented code of a shell program that could exhibit a shell program exhibiting the nature of an actual shell with few commands included. This repo can be a starting point for someone to start with shell building.
